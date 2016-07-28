@@ -8,13 +8,19 @@ int main(int argc, char* argv[])
 {
 	SDL_Window* window = NULL;
 	SDL_Surface* screen = NULL;
+
 	SDL_Event e;	
-	
+	Uint8* currentKeyStates=SDL_GetKeyboardState(NULL);
+
 	int running = 1;
+	int imgFlags = IMG_INIT_PNG;	
 
 	if(SDL_Init(SDL_INIT_VIDEO < 0))
 	{
 		printf("SDL Error: %s\n", SDL_GetError());
+	}else if( !(IMG_Init(imgFlags) & imgFlags))
+	{
+		printf( "SDL_image could not be initilized. SDL Image Error: %s\n",IMG_GetError());
 	}else
 	{
 		window = SDL_CreateWindow("Instrumentality", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -32,25 +38,15 @@ int main(int argc, char* argv[])
 				{
 					if(e.type == SDL_QUIT)
 						running=0;
-					else if(e.type == SDL_KEYDOWN)
-					{
-						switch(e.key.keysym.sym)
-						{
-							case SDLK_UP:
-								printf("up\n");
-								break;
-							case SDLK_DOWN:
-								printf("down\n");
-								break;
-							case SDLK_LEFT:
-								printf("left\n");
-								break;
-							case SDLK_RIGHT:
-								printf("right\n");
-								break;
-						}
-					}
 				}
+				currentKeyStates = SDL_GetKeyboardState(NULL);
+				int up = 0;
+				int down = 0;
+				if(currentKeyStates[SDL_SCANCODE_UP])
+					up=1;
+				if(currentKeyStates[SDL_SCANCODE_DOWN])
+					down=1;
+				printf("%d\n",up + down);
 			}		
 
 			/*SDL_Surface* player = loadSurface("./res/miro/idle_R.png",screen);
@@ -71,24 +67,3 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-SDL_Surface* loadSurface(char* path, SDL_Surface* screen)
-{
-	SDL_Surface* optimized = NULL;
-	SDL_Surface* loaded = IMG_Load(path);
-	
-	if(loaded==NULL)
-	{
-		printf("Unable to load image %s, SDL Image Error:%s\n",path, IMG_GetError());
-	}else
-	{
-		optimized = SDL_ConvertSurface(loaded, screen->format, NULL);
-		if(optimized == NULL)
-		{
-
-			printf("Unable to optimize image %s, SDL Image Error:%s\n",path, SDL_GetError());
-		}
-		SDL_FreeSurface(loaded);
-	}
-	
-	return optimized;
-}
