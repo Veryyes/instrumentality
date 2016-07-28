@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include "util.h"
 
+//Loads surface for bliting on the screen
 SDL_Surface* load_surface(char* path, SDL_Surface* screen)
 {
 	SDL_Surface* optimized = NULL;
