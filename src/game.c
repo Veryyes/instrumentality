@@ -3,6 +3,9 @@
 #include <SDL2/SDL_image.h>
 
 #include "game.h"
+#include "player.h"
+#include "util.h"
+#include "map.h"
 
 int main(int argc, char* argv[])
 {
@@ -38,9 +41,13 @@ int main(int argc, char* argv[])
 			if(renderer==NULL)
 			{
 				printf("Renderer could not be created. SDL Error:%s\n", SDL_GetError());
-				running = 0;
+				//running = 0; Developing on a computer that cannot support hardware rendering.... ;_;
 			}
 			screen = SDL_GetWindowSurface(window);
+			
+			//Game Variables
+			Player* player = load_player(screen);
+			Map* map = load_map("test", screen);
 
 			while(running)//Main Loop
 			{
@@ -51,24 +58,23 @@ int main(int argc, char* argv[])
 						running=0;
 				}
 				currentKeyStates = SDL_GetKeyboardState(NULL);
-				int up = 0;
-				int down = 0;
 				if(currentKeyStates[SDL_SCANCODE_UP])
-					up=1;
+					player->pos->y--;
 				if(currentKeyStates[SDL_SCANCODE_DOWN])
-					down=1;
-			}		
+					player->pos->y++;
+				if(currentKeyStates[SDL_SCANCODE_LEFT])
+					player->pos->x--;
+				if(currentKeyStates[SDL_SCANCODE_RIGHT])
+					player->pos->x++;
 
-			/*SDL_Surface* player = loadSurface("./res/miro/idle_R.png",screen);
-			SDL_BlitSurface(player, NULL, screen, NULL);
-			SDL_UpdateWindowSurface(window);
-			SDL_Delay(2000);
-			*/
+				//Bliting|Rendering
+				SDL_BlitSurface(map->background, NULL, screen, NULL);
+				SDL_BlitSurface(player->sprite, NULL, screen, player->pos);
+				SDL_UpdateWindowSurface(window);
+			}		
 		}
 	}
-	//Free up stuffs
-//	SDL_FreeSurface(player);
-//	player=NULL;
+	//Free up stuffs on exit
 	SDL_DestroyRenderer(renderer);
 	renderer=NULL;
 

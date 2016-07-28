@@ -23,3 +23,22 @@ SDL_Surface* load_surface(char* path, SDL_Surface* screen)
 	}
 	return optimized;
 }
+
+SDL_Texture* load_texture(char* path, SDL_Renderer* renderer)
+{
+	SDL_Texture* texture = NULL;
+	SDL_Surface* loaded_surface = IMG_Load(path);
+	if(loaded_surface==NULL)
+	{
+		printf("Unable to load image %s, SDL Image Error:%s\n",path,IMG_GetError());
+	}else{
+		texture = SDL_CreateTextureFromSurface(renderer, loaded_surface);
+		if(texture == NULL)
+		{
+			printf("Unable to create texture from %s, SDL Erorr:%s\n", path, SDL_GetError());
+		}
+		SDL_FreeSurface(loaded_surface);
+	}
+	
+	return texture;
+}
