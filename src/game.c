@@ -43,8 +43,11 @@ int main(int argc, char* argv[])
 				printf("Renderer could not be created. SDL Error:%s\n", SDL_GetError());
 				//running = 0; Developing on a computer that cannot support hardware rendering.... ;_;
 			}
+
 			screen = SDL_GetWindowSurface(window);
-			
+			if(SDL_SetSurfaceBlendMode(screen, SDL_BLENDMODE_BLEND))
+				printf("SDL Error: %s\n", SDL_GetError());
+	
 			//Game Variables
 			Player* player = load_player(screen);
 			Map* map = load_map("test", screen);
@@ -62,11 +65,7 @@ int main(int argc, char* argv[])
 					player->pos->y--;
 				if(currentKeyStates[SDL_SCANCODE_DOWN])
 					player->pos->y++;
-				if(currentKeyStates[SDL_SCANCODE_LEFT])
-					player->pos->x--;
-				if(currentKeyStates[SDL_SCANCODE_RIGHT])
-					player->pos->x++;
-
+				update_player(player, currentKeyStates);
 				//Bliting|Rendering
 				SDL_BlitSurface(map->background, NULL, screen, NULL);
 				SDL_BlitSurface(player->sprite, NULL, screen, player->pos);

@@ -14,16 +14,22 @@ SDL_Surface* load_surface(char* path, SDL_Surface* screen)
 		printf("Unable to load image %s, SDL Image Error:%s\n", path, IMG_GetError());
 	}else
 	{
-		optimized = SDL_ConvertSurface(crude, screen->format, NULL);
+		SDL_PixelFormat* format = screen->format;
+		format->Amask = 0xFF000000; //Allows for alpha channel!
+		optimized = SDL_ConvertSurface(crude, format, NULL);
 		if(optimized == NULL)
 		{
 			printf("Unable to optimize image %s, SDL Error: %s\n", path, SDL_GetError());
 		}
 		SDL_FreeSurface(crude);
+//		Uint32 colorkey = SDL_MapRGB(optimized->format, 0xFF, 0, 0xFF);
+//		SDL_SetColorKey(optimized, SDL_TRUE ,colorkey);
 	}
 	return optimized;
+//	return crude;
 }
 
+//Loads Texture for rendering
 SDL_Texture* load_texture(char* path, SDL_Renderer* renderer)
 {
 	SDL_Texture* texture = NULL;
