@@ -19,7 +19,7 @@ typedef struct player{
 	int direction;
 } Player;
 
-Player* load_player(SDL_Surface*);
+Player* load_player(SurfaceHashMap*);
 void free_player(Player*);
 void update_player(Player*, Uint8*);
 

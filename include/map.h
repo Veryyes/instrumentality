@@ -6,6 +6,6 @@ typedef struct Map{
 	SDL_Surface* background;
 } Map;
 
-Map* load_map(char*, SDL_Surface*);
+Map* load_map(char*, SurfaceHashMap*);
 void free_map(Map*);
 #endif

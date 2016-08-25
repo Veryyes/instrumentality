@@ -2,10 +2,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include <player.h>
-#include <util.h>
+#include "util.h"
+#include "surface_hashmap.h"
+#include "player.h"
 
-Player* load_player(SDL_Surface* screen)
+Player* load_player(SurfaceHashMap* hashmap)
 {
 	Player* player = malloc(sizeof(Player));
 	if(player == NULL)
@@ -16,7 +17,8 @@ Player* load_player(SDL_Surface* screen)
 	player->hp = 10;
 	player->energy = 10;
 	player->lives = 10;
-	player->sprite = load_surface("./res/miro/idle_R.png", screen);	
+	player->sprite = get_surface("./res/miro/idle_R.png", hashmap);
+	//load_surface("./res/miro/idle_R.png", screen);	
 
 	SDL_Rect* pos = malloc(sizeof(SDL_Rect));
 	if(pos == NULL)
@@ -58,7 +60,6 @@ void update_player(Player* player, Uint8* keystates)
 
 void free_player(Player* player)
 {	
-	SDL_FreeSurface(player->sprite);
 	player->sprite = NULL;
 
 	free(player->pos);

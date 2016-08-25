@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
-#include "map.h"
 #include "util.h"
+#include "surface_hashmap.h"
+#include "map.h"
 
-Map* load_map(char* path, SDL_Surface* screen){
+Map* load_map(char* path, SurfaceHashMap* hashmap){
 	//Malloc space
 	Map* new_map = malloc(sizeof(Map));
 	if(new_map == NULL)
@@ -14,14 +15,13 @@ Map* load_map(char* path, SDL_Surface* screen){
 	}
 	//Temporary Default Values
 	new_map->level = 1;
-	new_map->background = load_surface("res/background/back1.png", screen);
+	new_map->background = get_surface("./res/background/back1.png", hashmap);
 	return new_map;
 }
 
 void free_map(Map* map)
 {
 	map->level=0;
-	SDL_FreeSurface(map->background);
 	map->background=NULL;
 	free(map);
 }

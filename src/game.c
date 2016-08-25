@@ -2,10 +2,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "game.h"
-#include "player.h"
+
+#include "surface_hashmap.h"
 #include "util.h"
+#include "player.h"
 #include "map.h"
+#include "game.h"
 
 int main(int argc, char* argv[])
 {
@@ -17,8 +19,11 @@ int main(int argc, char* argv[])
 	Uint8* currentKeyStates=SDL_GetKeyboardState(NULL);
 
 	int running = 1;
-	int imgFlags = IMG_INIT_PNG;	
-
+	int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;
+	
+	Player* player = NULL;
+	SurfaceHashMap* surface_hashmap = NULL;
+	
 	if(SDL_Init(SDL_INIT_VIDEO < 0))
 	{
 		printf("SDL Error: %s\n", SDL_GetError());
@@ -29,6 +34,7 @@ int main(int argc, char* argv[])
 		printf( "SDL_image could not be initilized. SDL Image Error: %s\n",IMG_GetError());
 		running=0;
 	}
+	printf("SDL and SDL_IMG initialized\n");
 	if(running)
 	{
 		window = SDL_CreateWindow("Instrumentality", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -47,11 +53,18 @@ int main(int argc, char* argv[])
 			screen = SDL_GetWindowSurface(window);
 			if(SDL_SetSurfaceBlendMode(screen, SDL_BLENDMODE_BLEND))
 				printf("SDL Error: %s\n", SDL_GetError());
-	
-			//Game Variables
-			Player* player = load_player(screen);
-			Map* map = load_map("test", screen);
+			
+			printf("Window and Screen initialized\n");
 
+			surface_hashmap = load_SurfaceHashMap(screen);		
+			printmap(surface_hashmap);
+				
+			printf("Images initialized\n");
+			//Game Variables
+			player = load_player(surface_hashmap);
+			Map* map = load_map("test", surface_hashmap);
+			
+			printf("Game Variables loaded, Running game loop!\n");
 			while(running)//Main Loop
 			{
 				//Events
@@ -74,6 +87,9 @@ int main(int argc, char* argv[])
 		}
 	}
 	//Free up stuffs on exit
+	free_player(player);
+	free_SurfaceHashMap(surface_hashmap);
+
 	SDL_DestroyRenderer(renderer);
 	renderer=NULL;
 
