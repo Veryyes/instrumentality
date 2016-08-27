@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include <time.h>
+#include <unistd.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
 
 #include "surface_hashmap.h"
 #include "util.h"
@@ -22,6 +23,10 @@ int main(int argc, char* argv[])
 	Uint8* currentKeyStates=SDL_GetKeyboardState(NULL);
 
 	int running = 0;
+	const int FPS = 60;
+	clock_t start_time;
+	float sleep_time = 0;
+
 	int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;
 
 	//Loads of window and screen (graphics stuff)
@@ -38,6 +43,7 @@ int main(int argc, char* argv[])
 	printf("Game Variables loaded, Running game loop!\n");
 	while(running)//Main Loop
 	{
+		start_time = clock();
 		//Events
 		while(SDL_PollEvent(&e) != 0)
 		{
@@ -57,8 +63,19 @@ int main(int argc, char* argv[])
 		//Bliting|Rendering
 		SDL_BlitSurface(map->background, NULL, screen, NULL);
 		SDL_BlitSurface(player->sprite, NULL, screen, player->pos);
-		SDL_UpdateWindowSurface(window);				
-	}
+		SDL_UpdateWindowSurface(window);
+		
+		//FPS Management
+		sleep_time = (1.0/FPS)-(((float)(clock()-start_time))/CLOCKS_PER_SEC);
+		if(sleep_time > 0)
+		{	
+			printf("Extra Time(s): %f\n",sleep_time);
+			usleep((unsigned int)(sleep_time*1000000));
+		}else
+		{
+			printf("Game Lagging by %f seconds\n",fabs(sleep_time));
+		}
+}
 
 	//Free up stuffs on exit
 	free_player(player);
