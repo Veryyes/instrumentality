@@ -10,7 +10,7 @@
 #include "game.h"
 
 
-int init(SDL_Window** window, SDL_Surface** screen, SDL_Renderer** renderer);
+int init(SDL_Window** window, SDL_Surface** screen, SDL_Renderer** renderer, int imgFlags);
 
 int main(int argc, char* argv[])
 {
@@ -25,9 +25,9 @@ int main(int argc, char* argv[])
 	int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;
 
 	//Loads of window and screen (graphics stuff)
-	running = init(&window, &screen, &renderer); 
+	running = init(&window, &screen, &renderer, imgFlags); 
 
-	SurfaceHashmap* surface_hashmap = load_SurfaceHashMap(screen);		
+	SurfaceHashMap* surface_hashmap = load_SurfaceHashMap(screen);		
 	//printmap(surface_hashmap);				
 	printf("Images initialized\n");
 
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-int init(SDL_Window** window, SDL_Surface** screen, SDL_Renderer** renderer)
+int init(SDL_Window** window, SDL_Surface** screen, SDL_Renderer** renderer, int imgFlags)
 {
 	int running = 1;
 	if(SDL_Init(SDL_INIT_VIDEO < 0))
@@ -93,22 +93,22 @@ int init(SDL_Window** window, SDL_Surface** screen, SDL_Renderer** renderer)
 	printf("SDL and SDL_IMG initialized\n");
 	if(running)
 	{
-		window* = SDL_CreateWindow("Instrumentality", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if(window* == NULL)
+		*window = SDL_CreateWindow("Instrumentality", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		if(*window == NULL)
 		{
 			printf("Window could not be created. SDL Error: %s\n",SDL_GetError());
 			running = 0;
 		}else	//GUI Properly Loaded
 		{
-			renderer* = SDL_CreateRenderer(window*, -1, SDL_RENDERER_ACCELERATED);
-			if(renderer*==NULL)
+			*renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+			if(*renderer==NULL)
 			{
 				printf("Renderer could not be created. SDL Error:%s\n", SDL_GetError());
 				//running = 0; Developing on a computer that cannot support hardware rendering.... ;_;
 			}
 
-			screen* = SDL_GetWindowSurface(window);
-			if(SDL_SetSurfaceBlendMode(screen*, SDL_BLENDMODE_BLEND))
+			*screen = SDL_GetWindowSurface(*window);
+			if(SDL_SetSurfaceBlendMode(*screen, SDL_BLENDMODE_BLEND))
 				printf("SDL Error: %s\n", SDL_GetError());
 			
 			printf("Window and Screen initialized\n");
