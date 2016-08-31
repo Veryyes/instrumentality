@@ -2,13 +2,13 @@
 #define MAP_H
 
 typedef struct Quadnode{
-	char* data;
-	int xcenter;
-	int ycenter;
-/*	int x;
+	Wall* data;
+	int x;
 	int y;
 	int width;
-	int height;*/
+	int height;
+	int xcenter;
+	int ycenter;
 	struct Quadnode* child1;
 	struct Quadnode* child2;
 	struct Quadnode* child3;
