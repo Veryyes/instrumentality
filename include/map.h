@@ -9,6 +9,7 @@
 typedef struct Map{
 	int level;
 	SDL_Surface* background;
+	Quadtree* walls;
 } Map;
 
 Map* load_map(char*, SurfaceHashMap*);
