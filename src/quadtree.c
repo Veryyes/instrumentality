@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "quadtree.h"
+#include "wall.h"
 
 Quadtree* gen_tree(char** map_data)
 {
@@ -58,7 +59,7 @@ Quadnode* alloc_children(Quadnote* root)//Returns address of first child
 	return root->child1;
 }
 
-void add_point(Quadnode* root, int x, int y, char data)
+void add_point(Quadnode* root, int x, int y, Wall* data)
 {
 	if(root->data == NULL)
 	{
@@ -68,9 +69,9 @@ void add_point(Quadnode* root, int x, int y, char data)
 	{	//Also at this point it shouldnt have any children
 		alloc_children(root);
 		//Transfer root's data down
+			
 			//if both data points are in thr same quadrent
 			//if data points are in diff quadrents
-		//TODO make a wall.c
 	}
 
 
