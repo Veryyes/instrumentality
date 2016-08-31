@@ -4,6 +4,10 @@ width = 38
 height = 22
 wall = '0'
 
+if(len(sys.argv)<2):
+	print("Specify Map Name!")
+	exit()
+
 f = open(sys.argv[1], 'w')
 
 #Ceiling
