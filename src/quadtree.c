@@ -59,7 +59,7 @@ Quadnode* alloc_children(Quadnote* root)//Returns address of first child
 	return root->child1;
 }
 
-void add_point(Quadnode* root, int x, int y, Wall* data)
+void add_point(Quadnode* root, Wall* data)
 {
 	if(root->data == NULL)
 	{
@@ -69,7 +69,17 @@ void add_point(Quadnode* root, int x, int y, Wall* data)
 	{	//Also at this point it shouldnt have any children
 		alloc_children(root);
 		//Transfer root's data down
-			
+		//check if in the same quadrant
+		int xcheck = (data->x > root->xcenter) ^ (root->data->x > root->xcenter);
+		int ycheck = (data->y > root->ycenter) ^ (root->data->y > root->ycenter);
+		int same_quadrant = !(xcheck | ycheck);
+		if(same_quadrant)
+		{
+
+		}else
+		{
+
+		}
 			//if both data points are in thr same quadrent
 			//if data points are in diff quadrents
 	}

@@ -1,6 +1,15 @@
 #ifndef MAP_H
 #define MAP_H
 
+#define WALL_WIDTH 32
+#define WALL_HEIGHT 32
+
+typedef struct Wall{
+	int x;
+	int y;
+	char data;
+} Wall;
+
 typedef struct Quadnode{
 	Wall* data;
 	int x;
