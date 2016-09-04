@@ -1,5 +1,13 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef QUADTREE_H
+#define QUADTREE_H
+
+#ifndef MAPDIMS
+#define SCREEN_WIDTH 1216
+#define SCREEN_HEIGHT 704
+
+#define BLOCK_WIDTH 38
+#define BLOCK_HEIGHT 22
+#endif
 
 #define WALL_WIDTH 32
 #define WALL_HEIGHT 32
@@ -39,6 +47,6 @@ typedef struct Quadtree{
 } Quadtree;
 
 Quadtree* gen_tree(char**);
-void add_node(Quadnode*, int x, int y);
-void free_quadtree(Quadnode*);
+void add_wall(Quadnode*, Wall*);
+void free_quadtree(Quadtree*);
 #endif

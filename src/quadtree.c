@@ -1,7 +1,7 @@
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "quadtree.h"
-#include "map.h"
 
 Quadtree* gen_tree(char** map_data)//takes raw map data
 {
@@ -34,19 +34,19 @@ Quadtree* gen_tree(char** map_data)//takes raw map data
 				wall -> y = i * WALL_HEIGHT;
 				wall -> data = '0';
 
-				add_wall(tree -> root, wall);
+				add_wall((tree -> root), wall);
 			}
 		}
 	}
 }
 
-Quadnode* alloc_children(Quadnote* root)//Returns address of first child
+Quadnode* alloc_children(Quadnode* root)//Returns address of first child
 {
 	(root -> child1) = calloc(4, sizeof(Quadnode));
-	(root -> child2) = (root1->child1)[1];
-	(root -> child3) = (root1->child1)[2];
-	(root -> child4) = (root1->child1)[3];
-	if((root -> child1)|(root -> child2)|(root -> child3)|(root -> child4) == NULL)
+	(root -> child2) = (root->child1)+1;
+	(root -> child3) = (root->child1)+2;
+	(root -> child4) = (root->child1)+3;
+	if(root -> child1 == NULL)
 	{
 		printf("Unable to malloc mem for Quadnode\n");
 		exit(1);
@@ -81,8 +81,8 @@ Quadnode* alloc_children(Quadnote* root)//Returns address of first child
 	child3 -> xcenter = (child3 -> x + child3 -> width)/2;
 	child3 -> ycenter = (child3 -> y + child3 -> height)/2;
 
-	child4 -> x = root -> xcenter 
-	child4 -> y = root -> ycenter
+	child4 -> x = root -> xcenter;
+	child4 -> y = root -> ycenter;
 	child4 -> width = w;
 	child4 -> height = h;
 	child4 -> xcenter = (child4 -> x + child4 -> width)/2;
@@ -100,7 +100,7 @@ Quadnode* get_child(Quadnode* node, Wall* data)//returns which child this wall b
 {
 	int x = data -> x > node -> xcenter;
 	int y = data -> y > node -> ycenter;
-	return (node -> child1)[(3+x-y-2*x*y)%4];
+	return (node -> child1)+(3+x-y-2*x*y)%4;
 }
 
 void add_wall(Quadnode* root, Wall* data)
@@ -127,11 +127,6 @@ void add_wall(Quadnode* root, Wall* data)
 	}
 }
 
-void free_quadtree(Quadtree* tree)
-{
-	free_quadnode(tree -> root);
-}
-
 void free_quadnode(Quadnode* root)
 {
 	if(isleaf(root))
@@ -142,6 +137,11 @@ void free_quadnode(Quadnode* root)
 	int i;
 	for(i = 0; i < 4; i++)
 	{
-		free_quadnode((root->child1)[i]);
+		free_quadnode((root->child1)+i);
 	}
+}
+
+void free_quadtree(Quadtree* tree)
+{
+	free_quadnode(tree -> root);
 }

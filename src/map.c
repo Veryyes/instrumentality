@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
+#include "quadtree.h"
 #include "util.h"
 #include "surface_hashmap.h"
 #include "map.h"
