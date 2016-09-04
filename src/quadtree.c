@@ -59,56 +59,39 @@ Quadnode* alloc_children(Quadnote* root)//Returns address of first child
 	return root->child1;
 }
 
-void add_point(Quadnode* root, Wall* data)
+int isleaf(Quadnode* node)
 {
-	if(root->data == NULL)
+	return (node->child1 == NULL); //If child1 is NULL, all the children are NULL
+}
+
+Quadnode* get_child(Quadnode* node, Wall* data)//returns which child this wall belongs to
+{
+	int x = data -> x > node -> xcenter;
+	int y = data -> y > node -> ycenter;
+	return (node -> child1)[(3+x-y-2*x*y)%4];
+}
+
+void add_wall(Quadnode* root, Wall* data)
+{
+	if(isleaf(root))
 	{
-		root->data = data;
-		return;
-	}else//This node already is full we need to split it 4 way
-	{	//Also at this point it shouldnt have any children
-		alloc_children(root);
-		//Transfer root's data down
-		//check if in the same quadrant
-		int xcheck = (data->x > root->xcenter) ^ (root->data->x > root->xcenter);
-		int ycheck = (data->y > root->ycenter) ^ (root->data->y > root->ycenter);
-		int same_quadrant = !(xcheck | ycheck);
-		if(same_quadrant)
+		if(root -> data == NULL)// Empty Leaf
 		{
-
-		}else
+			root -> data = data;
+		}else// Leaf with data in it
 		{
+			alloc_children(root);
 
+			//Transfer root's data down
+			Wall* curr = root -> data;
+			add_wall(get_child(root, curr), curr);
+			(root -> data) = NULL;
+
+			add_wall(get_child(root, data), data);
 		}
-			//if both data points are in thr same quadrent
-			//if data points are in diff quadrents
-	}
-
-
-
-
-
-
-
-
-
-	if(x > root->xcenter)//right side
+	}else
 	{
-		if(y > root->ycenter)//bottom
-		{//4
-			
-		}else//top
-		{//1
-
-		}
-	}else //left side
-	{
-		if(y > root->ycenter)//bottom
-		{//3
-
-		}else//top
-		{//2
-
-		}
+		add_wall(get_child(root, data), data);
 	}
 }
+
