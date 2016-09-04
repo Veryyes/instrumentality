@@ -2,6 +2,7 @@
 #define QUADTREE_H
 
 #ifndef MAPDIMS
+#define MAPDIMS
 #define SCREEN_WIDTH 1216
 #define SCREEN_HEIGHT 704
 

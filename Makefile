@@ -24,7 +24,7 @@ game: $(OBJS)
 	$(CC) $(CFLAGS) ./src/surface_hashmap.c -c $(INCLUDE) $(LINKS) -o ./obj/surface_hashmap.o
 
 ./obj/quadtree.o:
-	$(CC) $(CFALGS) ./src/quadtree.c -c $(INCLUDE) -o ./obj/quadtree.o
+	$(CC) $(CFLAGS) ./src/quadtree.c -c $(INCLUDE) -o ./obj/quadtree.o
 
 clean:
 	rm -f bin/*

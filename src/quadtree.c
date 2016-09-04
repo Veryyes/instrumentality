@@ -24,7 +24,7 @@ Quadtree* gen_tree(char** map_data)//takes raw map data
 		{
 			if(map_data[i][j] == '0')//if its a wall
 			{
-				Wall* wall = malloc(sizeof(wall));
+				Wall* wall = malloc(sizeof(Wall));
 				if(wall == NULL)
 				{
 					printf("Out of mem\n");

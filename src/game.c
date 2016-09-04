@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
 	//Game Variables
 	Player* player = load_player(surface_hashmap);
-	Map* map = load_map("test", surface_hashmap);
+	Map* map = load_map("./maps/level1", surface_hashmap);
 	
 	printf("Game Variables loaded, Running game loop!\n");
 	while(running)//Main Loop
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 		sleep_time = (1.0/FPS)-(((float)(clock()-start_time))/CLOCKS_PER_SEC);
 		if(sleep_time > 0)
 		{	
-			printf("Extra Time(s): %f\n",sleep_time);
+		//	printf("Extra Time(s): %f\n",sleep_time);
 			usleep((unsigned int)(sleep_time*1000000));
 		}else
 		{

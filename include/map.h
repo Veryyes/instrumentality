@@ -2,11 +2,13 @@
 #define MAP_H
 
 #ifndef MAPDIMS
+#define MAPDIMS
 #define SCREEN_WIDTH 1216
 #define SCREEN_HEIGHT 704
 #define BLOCK_WIDTH 38
 #define BLOCK_HEIGHT 22
 #endif
+#define MAP_AREA 38*22
 
 struct Quadtree;
 
