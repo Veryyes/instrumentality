@@ -36,10 +36,9 @@ typedef struct Quadnode{
 
 typedef struct Quadtree{
 	Quadnode* root;
-	int size; //number of total nodes
 } Quadtree;
 
 Quadtree* gen_tree(char**);
 void add_node(Quadnode*, int x, int y);
-
+void free_quadtree(Quadnode*);
 #endif

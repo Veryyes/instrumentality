@@ -1,11 +1,43 @@
 #include <stdio.h>
 
 #include "quadtree.h"
-#include "wall.h"
+#include "map.h"
 
-Quadtree* gen_tree(char** map_data)
+Quadtree* gen_tree(char** map_data)//takes raw map data
 {
+	Quadtree* tree = malloc(sizeof(Quadtree));
+	if(tree == NULL)
+	{
+		printf("Out of memory\n");
+		exit(1);
+	}
+	tree -> root = calloc(1, sizeof(Quadnode));
+	tree -> root -> width = SCREEN_WIDTH;
+	tree -> root -> height = SCREEN_HEIGHT;
+	tree -> root -> xcenter = SCREEN_WIDTH/2;
+	tree -> root -> ycenter = SCREEN_HEIGHT/2;
 
+	int i, j;
+	for(i = 0; i < BLOCK_HEIGHT; i++)
+	{
+		for(j = 0; j < BLOCK_WIDTH; j++)
+		{
+			if(map_data[i][j] == '0')//if its a wall
+			{
+				Wall* wall = malloc(sizeof(wall));
+				if(wall == NULL)
+				{
+					printf("Out of mem\n");
+					exit(1);
+				}
+				wall -> x = j * WALL_WIDTH;
+				wall -> y = i * WALL_HEIGHT;
+				wall -> data = '0';
+
+				add_wall(tree -> root, wall);
+			}
+		}
+	}
 }
 
 Quadnode* alloc_children(Quadnote* root)//Returns address of first child
@@ -95,3 +127,21 @@ void add_wall(Quadnode* root, Wall* data)
 	}
 }
 
+void free_quadtree(Quadtree* tree)
+{
+	free_quadnode(tree -> root);
+}
+
+void free_quadnode(Quadnode* root)
+{
+	if(isleaf(root))
+	{
+		free(root->data);
+		return;
+	}
+	int i;
+	for(i = 0; i < 4; i++)
+	{
+		free_quadnode((root->child1)[i]);
+	}
+}
