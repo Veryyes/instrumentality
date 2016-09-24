@@ -10,12 +10,11 @@
 #endif
 #define MAP_AREA 38*22
 
-struct Quadtree;
 
 typedef struct Map{
 	int level;
 	SDL_Surface* background;
-	struct Quadtree* walls;
+	quadtree_t* wall_data;
 } Map;
 
 Map* load_map(char*, SurfaceHashMap*);

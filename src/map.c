@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
+#include "surface_hashmap.h"
 #include "quadtree.h"
 #include "util.h"
-#include "surface_hashmap.h"
 #include "map.h"
 
 Map* load_map(char* path, SurfaceHashMap* hashmap){
@@ -31,23 +31,18 @@ Map* load_map(char* path, SurfaceHashMap* hashmap){
 	buff[strlen(buff)-1] = '\0';
 	new_map->background = get_surface(buff, hashmap);
 
+	
 	//Level Data
-	char** map_data = malloc(BLOCK_HEIGHT * sizeof(char*));
 	int i;
 	for(i = 0; i < BLOCK_HEIGHT; i++)
 	{
-		fgets(buff,BLOCK_WIDTH+2, map_file);
-		map_data[i] = malloc((BLOCK_WIDTH+2) * sizeof(char*));
+		fgets(buff,BLOCK_WIDTH+2, map_file);	
 		buff[strlen(buff)-1] = '\0';
-		strcpy(map_data[i], buff);
 		printf("%s\n", buff);
 	}
-	new_map -> walls = gen_tree(map_data);
-	for(i = 0; i< BLOCK_HEIGHT; i++)
-	{
-		free(map_data[i]);
-	}
-	free(map_data);	
+
+
+
 
 	fclose(map_file);
 
