@@ -33,6 +33,7 @@ Map* load_map(char* path, SurfaceHashMap* hashmap){
 
 	
 	//Level Data
+	new_map -> wall_tree = quadtree_new(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 	int i;
 	for(i = 0; i < BLOCK_HEIGHT; i++)
 	{
