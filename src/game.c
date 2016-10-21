@@ -11,13 +11,17 @@
 #include "game.h"
 
 
+SDL_Window* window = NULL;
+SDL_Surface* screen = NULL;
+SDL_Renderer* renderer = NULL;
+
 int init(SDL_Window** window, SDL_Surface** screen, SDL_Renderer** renderer, int imgFlags);
 
 int main(int argc, char* argv[])
 {
-	SDL_Window* window = NULL;
-	SDL_Surface* screen = NULL;
-	SDL_Renderer* renderer = NULL;	
+	window = NULL;
+	screen = NULL;
+	renderer = NULL;	
 
 	SDL_Event e;	
 	Uint8* currentKeyStates=SDL_GetKeyboardState(NULL);
@@ -52,17 +56,14 @@ int main(int argc, char* argv[])
 		}
 		//Inputs
 		currentKeyStates = SDL_GetKeyboardState(NULL);
-		if(currentKeyStates[SDL_SCANCODE_UP])
-			player->pos->y--;
-		if(currentKeyStates[SDL_SCANCODE_DOWN])
-			player->pos->y++;
 
 		//Entity Updates
 		update_player(player, currentKeyStates);
 
 		//Bliting|Rendering
-		SDL_BlitSurface(map->background, NULL, screen, NULL);
-		SDL_BlitSurface(player->sprite, NULL, screen, player->pos);
+		blit_map(map);
+		blit_player(player);
+
 		SDL_UpdateWindowSurface(window);
 		
 		//FPS Management

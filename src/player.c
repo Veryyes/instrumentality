@@ -6,6 +6,8 @@
 #include "surface_hashmap.h"
 #include "player.h"
 
+extern SDL_Surface* screen;
+
 Player* load_player(SurfaceHashMap* hashmap)
 {
 	Player* player = malloc(sizeof(Player));
@@ -56,6 +58,11 @@ void update_player(Player* player, Uint8* keystates)
 	//Physics
 	player->pos->x += player->xVel;
 	player->pos->y += player->yVel;
+}
+
+void blit_player(Player* player)
+{
+	SDL_BlitSurface(player->sprite, NULL, screen, player->pos);
 }
 
 void free_player(Player* player)

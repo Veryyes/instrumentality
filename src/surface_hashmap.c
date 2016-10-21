@@ -5,6 +5,7 @@
 
 #include "surface_hashmap.h"
 
+
 SurfaceHashMap* load_SurfaceHashMap(SDL_Surface* screen)
 {
 	SurfaceHashMap* hashmap = malloc(sizeof(SurfaceHashMap));

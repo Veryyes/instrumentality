@@ -22,5 +22,6 @@ typedef struct player{
 Player* load_player(SurfaceHashMap*);
 void free_player(Player*);
 void update_player(Player*, Uint8*);
+void blit_player(Player*);
 
 #endif
