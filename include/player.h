@@ -15,8 +15,12 @@ typedef struct player{
 
 	int xVel;
 	int yVel;
+	int xAccel;
+	int yAccel;
 
 	int direction;
+	char falling;
+
 } Player;
 
 Player* load_player(SurfaceHashMap*);

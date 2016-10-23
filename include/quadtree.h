@@ -83,7 +83,7 @@ quadtree_new(double minx, double miny, double maxx, double maxy);
 void
 quadtree_free(quadtree_t *tree);
 
-quadtree_point_t*
+void*
 quadtree_search(quadtree_t *tree, double x, double y);
 
 int

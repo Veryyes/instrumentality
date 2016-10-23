@@ -8,6 +8,8 @@
 
 extern SDL_Surface* screen;
 
+int Gravity = -10;
+
 Map* load_map(char* path, SurfaceHashMap* hashmap){
 	//Malloc space
 	Map* new_map = malloc(sizeof(Map));

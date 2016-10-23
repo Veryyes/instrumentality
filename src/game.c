@@ -43,8 +43,9 @@ int main(int argc, char* argv[])
 	//Game Variables
 	Player* player = load_player(surface_hashmap);
 	Map* map = load_map("./maps/level1", surface_hashmap);
-	
+
 	printf("Game Variables loaded, Running game loop!\n");
+
 	while(running)//Main Loop
 	{
 		start_time = clock();
@@ -57,12 +58,17 @@ int main(int argc, char* argv[])
 		//Inputs
 		currentKeyStates = SDL_GetKeyboardState(NULL);
 
+		//Bliting|Rendering
+		blit_map(map);
+		blit_player(player);//TODO this needs to write before falling check idk why
+
 		//Entity Updates
 		update_player(player, currentKeyStates);
 
-		//Bliting|Rendering
-		blit_map(map);
-		blit_player(player);
+		Wall* below = (Wall*)quadtree_search(map->wall_tree,player->pos->x+(int)(.5*player->pos->w),player->pos->y+player->pos->h+4);
+		if(below==NULL)
+			player
+
 
 		SDL_UpdateWindowSurface(window);
 		
@@ -76,8 +82,9 @@ int main(int argc, char* argv[])
 		{
 			printf("Game Lagging by %f seconds\n",fabs(sleep_time));
 		}
-}
 
+}
+	printf("Game Loop exit\n");
 	//Free up stuffs on exit
 	free_player(player);
 	free_map(map);

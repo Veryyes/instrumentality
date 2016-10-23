@@ -34,6 +34,8 @@ Player* load_player(SurfaceHashMap* hashmap)
 
 	player->xVel = 0;
 	player->yVel = 0;
+	player->xAccel = 0;
+	player->yAccel = 0;
 
 	player->direction = RIGHT;
 
@@ -43,6 +45,7 @@ Player* load_player(SurfaceHashMap* hashmap)
 void update_player(Player* player, Uint8* keystates)
 {
 	player->xVel = 0;
+	player->yVel = 0;
 	//Key Strokes
 	if(keystates[SDL_SCANCODE_LEFT])
 	{
@@ -52,6 +55,16 @@ void update_player(Player* player, Uint8* keystates)
 	if(keystates[SDL_SCANCODE_RIGHT])
 	{
 		player->xVel = 4;
+		player->direction = RIGHT;
+	}
+	if(keystates[SDL_SCANCODE_UP])
+	{
+		player->yVel = -4;
+		player->direction = RIGHT;
+	}
+	if(keystates[SDL_SCANCODE_DOWN])
+	{
+		player->yVel = 4;
 		player->direction = RIGHT;
 	}
 
