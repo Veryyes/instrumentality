@@ -21,7 +21,7 @@ typedef struct Wall{
 	SDL_Rect* pos;
 }Wall;
 
-Map* load_map(char*, SurfaceHashMap*);
+Map* load_map(char*);
 void update_map(Map*);
 void blit_map(Map*);
 void free_map(Map*);

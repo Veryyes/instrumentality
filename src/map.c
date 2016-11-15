@@ -7,10 +7,11 @@
 #include "map.h"
 
 extern SDL_Surface* screen;
+extern SurfaceHashMap* surface_hashmap;
 
-int Gravity = -10;
+int Gravity = 3;
 
-Map* load_map(char* path, SurfaceHashMap* hashmap){
+Map* load_map(char* path){
 	//Malloc space
 	Map* new_map = malloc(sizeof(Map));
 	if(new_map == NULL)
@@ -33,7 +34,7 @@ Map* load_map(char* path, SurfaceHashMap* hashmap){
 	//Background Image
 	fgets(buff, 128, map_file);
 	buff[strlen(buff)-1] = '\0';
-	new_map->background = get_surface(buff, hashmap);
+	new_map->background = get_surface(buff, surface_hashmap);
 
 	
 	//Level Data
@@ -50,7 +51,7 @@ Map* load_map(char* path, SurfaceHashMap* hashmap){
 		{	
 			if(buff[j] == '0'){
 				Wall* wall = malloc(sizeof(Wall));
-				wall -> image = get_surface(WALL, hashmap);
+				wall -> image = get_surface(WALL, surface_hashmap);
 				SDL_Rect* pos = malloc(sizeof(SDL_Rect));
 				pos -> x = j*WALL_DIM;
 				pos -> y = i*WALL_DIM;

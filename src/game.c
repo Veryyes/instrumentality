@@ -14,6 +14,8 @@
 SDL_Window* window = NULL;
 SDL_Surface* screen = NULL;
 SDL_Renderer* renderer = NULL;
+SurfaceHashMap* surface_hashmap = NULL;
+Map* map = NULL;
 
 int init(SDL_Window** window, SDL_Surface** screen, SDL_Renderer** renderer, int imgFlags);
 
@@ -36,13 +38,13 @@ int main(int argc, char* argv[])
 	//Loads of window and screen (graphics stuff)
 	running = init(&window, &screen, &renderer, imgFlags); 
 
-	SurfaceHashMap* surface_hashmap = load_SurfaceHashMap(screen);		
+	surface_hashmap = load_SurfaceHashMap(screen);		
 	//printmap(surface_hashmap);				
 	printf("Images initialized\n");
 
 	//Game Variables
-	Player* player = load_player(surface_hashmap);
-	Map* map = load_map("./maps/level1", surface_hashmap);
+	Player* player = load_player();
+	map = load_map("./maps/level1");
 
 	printf("Game Variables loaded, Running game loop!\n");
 
@@ -64,11 +66,6 @@ int main(int argc, char* argv[])
 
 		//Entity Updates
 		update_player(player, currentKeyStates);
-
-		Wall* below = (Wall*)quadtree_search(map->wall_tree,player->pos->x+(int)(.5*player->pos->w),player->pos->y+player->pos->h+4);
-		if(below==NULL)
-			player
-
 
 		SDL_UpdateWindowSurface(window);
 		
