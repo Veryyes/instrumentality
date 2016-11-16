@@ -44,6 +44,9 @@ Player* load_player()
 
 	player->state = 0;
 
+	player->below = NULL;
+	player->previous_below = NULL;
+
 	return player;
 }
 
@@ -70,39 +73,36 @@ void update_player(Player* player, Uint8* keystates)
 	}
 	player->xVel = (-4 * (((player->state)>>LEFT)&1)) + (4 * (((player->state)>>RIGHT)&1));
 
-
-	Wall* below;
 	int nextX = player->pos->x + player->xVel;
 	int nextY = player->pos->y + player->yVel;
 	
 	if(nextX + (int)(.5*player->pos->w) > -1 && nextX + (int)(.5*player->pos->w) < SCREEN_WIDTH && nextY + player->pos->h && nextY + player->pos->h < SCREEN_HEIGHT)
 	{	
-		below = (Wall*)quadtree_search(map->wall_tree, nextX + (int)(.5*player->pos->w),nextY + player->pos->h);
-		if(below==NULL)
+		player->below = (Wall*)quadtree_search(map->wall_tree, nextX + (int)(.5*player->pos->w),nextY + player->pos->h);
+		if(player->below==NULL)
 			player->state |= (1<<FALLING);
 		else
 			player->state &= ~(1<<FALLING);
-		below = NULL;
+		player->below = NULL;
 		int count = 0;
-		while(below == NULL && nextY+player->pos->h+count*32 < SCREEN_HEIGHT){
-			printf("Looking for a wall %d\n", count);
-			printf("\t\n");
+		unsigned int step = 32;
+		while(player->below == NULL && nextY+player->pos->h+count*step <= SCREEN_HEIGHT){
 			
-			below = (Wall*)quadtree_search(map->wall_tree, nextX + (int)(.5*player->pos->w), nextY + player->pos->h + 32*count);
+			player->below = (Wall*)quadtree_search(map->wall_tree, nextX + (int)(.5*player->pos->w), nextY + player->pos->h + step*count);
 			count++;
-			if(below!=NULL){
-				printf("%d, %d, %d, %d\n",below->pos->x,below->pos->y,below->pos->w,below->pos->h);
-				SDL_FillRect(screen,below->pos,0);
-			}
-			usleep(100000);
+			if(player->below!=NULL){
+				player->previous_below = player->below;
+			//	printf("%d, %d, %d, %d\n",player->below->pos->x,player->below->pos->y,player->below->pos->w,player->below->pos->h);
+			//	SDL_FillRect(screen,player->below->pos,0);
+				break;
+			}		
+
 		}
-		if(below == NULL)
-			printf("Player off Screen\n");
-		else if(nextY > below->pos->y)
+
+		if(player->below==NULL&&player->previous_below!=NULL&&nextY+player->pos->h > player->previous_below->pos->y)
 		{
-			
 			player->state &= ~(1<<FALLING);
-			player->pos->y = below->pos->y;
+			player->pos->y = player->previous_below->pos->y-player->pos->h;
 		}
 	}
 

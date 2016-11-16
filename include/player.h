@@ -21,6 +21,9 @@ typedef struct player{
 
 	uint16_t state;
 
+	Wall* below;
+	Wall* previous_below;
+
 } Player;
 
 Player* load_player();

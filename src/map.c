@@ -9,7 +9,7 @@
 extern SDL_Surface* screen;
 extern SurfaceHashMap* surface_hashmap;
 
-int Gravity = 3;
+int Gravity = 1;
 
 Map* load_map(char* path){
 	//Malloc space
