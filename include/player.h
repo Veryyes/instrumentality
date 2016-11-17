@@ -6,6 +6,7 @@
 #define RIGHT 1
 #define DOWN 3
 #define FALLING 4
+#include "map.h"
 
 typedef struct player{
 	int hp;

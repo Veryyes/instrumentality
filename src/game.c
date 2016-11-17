@@ -10,7 +10,6 @@
 #include "map.h"
 #include "game.h"
 
-
 SDL_Window* window = NULL;
 SDL_Surface* screen = NULL;
 SDL_Renderer* renderer = NULL;

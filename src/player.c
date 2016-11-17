@@ -79,9 +79,9 @@ void update_player(Player* player, Uint8* keystates)
 	if(nextX + (int)(.5*player->pos->w) > -1 && nextX + (int)(.5*player->pos->w) < SCREEN_WIDTH && nextY + player->pos->h && nextY + player->pos->h < SCREEN_HEIGHT)
 	{	
 		player->below = (Wall*)quadtree_search(map->wall_tree, nextX + (int)(.5*player->pos->w),nextY + player->pos->h);
-		if(player->below==NULL)
+		if(player->below==NULL||player->yVel>0)
 			player->state |= (1<<FALLING);
-		else
+		else if(player->yVel<=0)
 			player->state &= ~(1<<FALLING);
 		player->below = NULL;
 		int count = 0;
@@ -93,7 +93,7 @@ void update_player(Player* player, Uint8* keystates)
 			if(player->below!=NULL){
 				player->previous_below = player->below;
 			//	printf("%d, %d, %d, %d\n",player->below->pos->x,player->below->pos->y,player->below->pos->w,player->below->pos->h);
-			//	SDL_FillRect(screen,player->below->pos,0);
+	//			SDL_FillRect(screen,player->below->pos,0);
 				break;
 			}		
 
@@ -105,14 +105,20 @@ void update_player(Player* player, Uint8* keystates)
 			player->pos->y = player->previous_below->pos->y-player->pos->h;
 		}
 	}
-
-	if(player->state&(1<<FALLING))//if airborne
+	if(player->state&(1<<FALLING))//if airborne yVel>0
 	{
 		player->yAccel = Gravity;
-	}else
+	}else//yVel <= 0
 	{
-		player->yAccel = 0;
-		player->yVel = 0;
+		if(player->state&(1<<UP)&&(player->yVel==0))
+		{
+			//player->state |= (1<<FALLING);
+			player->yVel = -8;
+		}else
+		{
+			player->yAccel = 0;
+			player->yVel = 0;
+		}
 	}
 //	printf("State: %d\n",player->state);
 	//Physics
@@ -122,7 +128,7 @@ void update_player(Player* player, Uint8* keystates)
 	player->xVel += player->xAccel;
 	player->yVel += player->yAccel;
 
-//	printf("Player(<%d,%d>,<%d,%d>,<%d,%d>)\n",player->pos->x,player->pos->y,player->xVel,player->yVel,player->xAccel,player->yAccel);
+	//printf("Player(<%d,%d>,<%d,%d>,<%d,%d>)\n",player->pos->x,player->pos->y,player->xVel,player->yVel,player->xAccel,player->yAccel);
 }
 
 void blit_player(Player* player)
